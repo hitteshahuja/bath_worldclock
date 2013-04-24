@@ -25,6 +25,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2013042400;        // The current plugin version (Date: YYYYMMDDXX)
+$plugin->version   = 2013042500;        // The current plugin version (Date: YYYYMMDDXX)
 $plugin->requires  = 2012112900;        // Requires this Moodle version
 $plugin->component = 'block_bath_worldclock'; // Full name of the plugin (used for diagnostics)

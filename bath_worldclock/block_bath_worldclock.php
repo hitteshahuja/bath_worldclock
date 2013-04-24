@@ -30,16 +30,46 @@
  */
  class block_bath_worldclock extends block_base {
  	
+	public $server_timezone = '';
+ 	
 	public function init(){
 		$this->title = get_string('pluginname','block_bath_worldclock');
+		if(date_default_timezone_get()){
+			$this->server_timezone = date_default_timezone_get();
+		}
 	}
 	public function get_content(){
 		  if ($this->content !== null) {
       	return $this->content;
     	}
+		  $module              = array(
+            'name' => 'bath_worldclock',
+            'fullpath' => '/blocks/bath_worldclock/module.js'
+        );
+		 $this->page->requires->js_init_call('M.WorldClock.init', array(
+            array()
+        ), false, $module);
 		$this->content         =  new stdClass;
-    	$this->content->text   = 'The content of our SimpleHTML block!';
-    	$this->content->footer = 'Footer here...';  
+    	$this->content->text   = "<div id=\"block_worldclock\">";
+    	$this->content->text .= "<ul id=\"clocklist\">";
+		$this->content->text .= "<li>".$this->university_time_box()."</li>";
+    	$this->content->text .= "<li><div class=\"university_box\">Dublin /Ireland</div></li>";
+		$this->content->text .= "<li><div class=\"university_box\">Kolkata /India</div></li>";
+    	$this->content->text .= "</ul>";
+    	$this->content->text .= "</div>";
 		return $this->content;
 	}
+	protected function university_time_box()
+	{
+		global $OUTPUT;
+		if($this->server_timezone)
+		{
+			$container =  $OUTPUT->container_start('university_box');
+			$container .= $this->server_timezone;
+			$container .= $OUTPUT->container_end();
+			
+		}
+		return $container;
+	}
+	 
  }
