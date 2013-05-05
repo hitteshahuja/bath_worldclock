@@ -1,7 +1,9 @@
 //Javascript file for world clock
 M.WorldClock = M.WorldClock || {};
 M.WorldClock.init = function(Y){
-	
+	//Hide timezone selector list
+	var timezone_selector = Y.one('.timezone_selector');
+	timezone_selector.hide();
 	YUI().use('dd-constrain', 'dd-proxy', 'dd-drop', function(Y) {
 		
 	var lis = Y.Node.all('#block_worldclock ul li');
@@ -92,9 +94,21 @@ Y.DD.DDM.on('drag:drophit', function(e) {
 
         }
     }
-                console.log('Dropping finished..now ajax');
+                //Once the user has finsished moving the clock, update the position in DB
 });
 
 });
 	
+}
+//Show the time with ticking seconds
+M.WorldClock.showTime = function (time){
+	
+	
+}
+M.WorldClock.updatePos = function(oldPos,newPos){
+	
+}
+M.WorldClock.addNewClock = function(){
+	Y.one('.timezone_selector').show();
+	return false;
 }

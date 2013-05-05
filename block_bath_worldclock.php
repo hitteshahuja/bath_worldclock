@@ -56,6 +56,8 @@
     	$this->content->text .= "<li><div class=\"university_box\">Dublin /Ireland</div></li>";
 		$this->content->text .= "<li><div class=\"university_box\">Kolkata /India</div></li>";
     	$this->content->text .= "</ul>";
+		$this->content->text .= "<div class=\"add_clock\" ><a href = \"#\" onClick = \"M.WorldClock.addNewClock();\">Add New Clock</a></div>";
+    	$this->content->text .= $this->get_timezones();
     	$this->content->text .= "</div>";
 		return $this->content;
 	}
@@ -69,6 +71,21 @@
 			$container .= $OUTPUT->container_end();
 			
 		}
+		return $container;
+	}
+	protected function get_timezones(){
+		global $OUTPUT,$DB;
+		$sql = "SELECT DISTINCT(name) FROM {timezone} ORDER BY name ;";
+		$timezones = $DB->get_records_sql($sql);
+		$select = "<select>";
+		foreach($timezones as $tz)
+		{
+			$select .="<option>$tz->name</option>";
+		}
+		$select .= "</select>";
+		$container =  $OUTPUT->container_start('timezone_selector');
+		$container .= $select;
+		$container .= $OUTPUT->container_end();
 		return $container;
 	}
 	 
