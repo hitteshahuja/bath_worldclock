@@ -42,6 +42,7 @@
 		  if ($this->content !== null) {
       	return $this->content;
     	}
+    	$block_instance =  $this->instance->id;
 		  $module              = array(
             'name' => 'bath_worldclock',
             'fullpath' => '/blocks/bath_worldclock/module.js'
@@ -55,8 +56,9 @@
 		$this->content->text .= "<li>".$this->university_time_box()."</li>";
     	$this->content->text .= "<li><div class=\"university_box\">Dublin /Ireland</div></li>";
 		$this->content->text .= "<li><div class=\"university_box\">Kolkata /India</div></li>";
+		$this->content->text .= $this->get_boxes($block_instance);
     	$this->content->text .= "</ul>";
-		$this->content->text .= "<div class=\"add_clock\" ><a href = \"#\" onClick = \"M.WorldClock.addNewClock();\">Add New Clock</a></div>";
+		$this->content->text .= "<div id=\"add_clock\" ><a href = \"#\" onClick = \"\">Add New Clock</a></div>";
     	$this->content->text .= $this->get_timezones();
     	$this->content->text .= "</div>";
 		return $this->content;
@@ -73,11 +75,32 @@
 		}
 		return $container;
 	}
+	protected function get_boxes($block_instance){
+		global $DB;
+		$sql = " SELECT tz.name,tz.tzrule FROM {block_bath_worldclock} wc 
+		JOIN {timezone} tz ON tz.id = wc.timezoneid WHERE wc.blockinstanceid = ?";
+		$result = $DB->get_records_sql($sql,array($block_instance));
+		$html_box = "";
+		foreach($result as $objTZ)
+		{
+			$html_box .= "";
+			echo $this->timezone_time($objTZ);
+			$html_box .= "<li><div class=\"university_box\">$objTZ->name </div></li>";
+		}
+		return $html_box;
+	}
+	protected function timezone_time($objTZ){
+		if(is_object($objTZ)){
+			date_default_timezone_set($objTZ->name);
+			echo date('h:m:s')."<br/>";
+		}
+	}
 	protected function get_timezones(){
 		global $OUTPUT,$DB;
-		$sql = "SELECT DISTINCT(name) FROM {timezone} ORDER BY name ;";
+		$sql = "SELECT DISTINCT(name) FROM {timezone} ORDER BY name ";
 		$timezones = $DB->get_records_sql($sql);
-		$select = "<select>";
+		$select = "<span>Select Timezone:</span>";
+		$select .= "<select name=\"timezone\" id='timezoneselect'>";
 		foreach($timezones as $tz)
 		{
 			$select .="<option>$tz->name</option>";
