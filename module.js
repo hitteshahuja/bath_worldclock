@@ -4,6 +4,8 @@ M.WorldClock.init = function(Y){
 	//Hide timezone selector list
 	var timezone_selector = Y.one('.timezone_selector');
 	timezone_selector.hide();
+    var addNewClockButton = Y.one('#add_clock');
+    addNewClockButton.on('click',M.WorldClock.addNewClock(Y));
 	YUI().use('dd-constrain', 'dd-proxy', 'dd-drop', function(Y) {
 		
 	var lis = Y.Node.all('#block_worldclock ul li');
@@ -108,7 +110,21 @@ M.WorldClock.showTime = function (time){
 M.WorldClock.updatePos = function(oldPos,newPos){
 	
 }
-M.WorldClock.addNewClock = function(){
+M.WorldClock.addNewClock = function(Y){
 	Y.one('.timezone_selector').show();
+    var timezoneSelection = Y.one('#timezoneselect');
+    timezoneSelection.on('change',function(e){
+        //Get the selection 
+        var selectedIndex = e._currentTarget.selectedIndex;
+        var selectedValue = e._currentTarget.value;
+        
+        //Get the last position
+
+        //Show the loader icon
+
+        //Show the new time box with the latest position
+
+        
+    });
 	return false;
 }
