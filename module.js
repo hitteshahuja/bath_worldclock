@@ -9,6 +9,7 @@ M.WorldClock.init = function(Y){
 	YUI().use('dd-constrain', 'dd-proxy', 'dd-drop', function(Y) {
 		
 	var lis = Y.Node.all('#block_worldclock ul li');
+
 	lis.each(function(v,k){
 		var dd = new Y.DD.Drag({
         node: v,
